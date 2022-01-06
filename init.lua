@@ -1,5 +1,31 @@
-RADIUS = 128
-SPAWN = {x=0, y=0, z=0}
+local RADIUS = 128
+local SPAWN = {x=0, y=0, z=0}
+local timer = 0
+
+--
+-- Determine center of spawnpoint as mean of player positions
+--
+
+minetest.register_globalstep(function(dtime)
+	timer = timer + dtime
+	if timer < 60 then return end
+	timer = 0
+
+	local sx = 0 -- mean x value
+	local sz = 0 -- mean z value
+	local players = minetest.get_connected_players()
+	for _,player in ipairs(players) do
+		local pos = player:get_pos()
+		sx = sx+pos.x
+		sz = sz+pos.z
+	end
+	SPAWN = {x=sx/#players, y=0, z=sz/#players}
+    --print("new Spawn at = "..SPAWN.x..", "..SPAWN.z)
+end)
+
+--
+-- Spawn players randomly within the defined area
+--
 
 local function findspawn(player)
 	for try=100000, 0, -1 do
@@ -39,9 +65,11 @@ local function spawnarea(player)
 	end
 end
 
+if not minetest.is_singleplayer() then
 minetest.register_on_newplayer(function(player)
 	spawnarea(player)
 end)
+end
 
 minetest.register_on_respawnplayer(function(player)
 	spawnarea(player)
