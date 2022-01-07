@@ -1,6 +1,8 @@
 Spawn Area
 ==========
 
+Players spawn and respawn within an area around the center of active players.
+
 License of source code:
 -----------------------
 This program is free software; you can redistribute it and/or modify

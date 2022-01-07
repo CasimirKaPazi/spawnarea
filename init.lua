@@ -48,8 +48,9 @@ local function findspawn(player)
 		pos.x = spawn.x + math.random(-radius, radius)
 		pos.y = spawn.y
 		pos.z = spawn.z + math.random(-radius, radius)
-		minetest.forceload_block(pos, true)
-		-- Find ground level (0...15)
+		local free = pos
+		minetest.forceload_block(free, true)
+		-- Find ground level
 		local ground_y = nil
 		for y=128, -128, -1 do
 			local nn = minetest.get_node({x=pos.x, y=pos.y+y, z=pos.z}).name
@@ -67,7 +68,7 @@ local function findspawn(player)
 				return pos_spawn
 			end
 		end
-		minetest.forceload_free_block(pos)
+		minetest.forceload_free_block(free, true)
 	end
 end
 
