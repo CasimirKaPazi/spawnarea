@@ -28,6 +28,7 @@ minetest.register_globalstep(function(dtime)
 			n = n + 1
 		end
 	end
+	if n < 1 then return end
 	center = {x=cx/n, y=cy/n, z=cz/n}
 	-- slowly approximate spawnpoint to new center
 	-- changes faster with more players
@@ -75,9 +76,9 @@ end
 local function spawnarea(player)
 	local pos = findspawn(player)
 	if pos then
-		player:setpos(pos)
+		player:set_pos(pos)
 	else
-		player:setpos(spawn)
+		player:set_pos(spawn)
 	end
 end
 
